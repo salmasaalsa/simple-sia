@@ -19,7 +19,8 @@ class CreateTeachersTable extends Migration
             $table->date('date_of_birth');
             $table->string('place_of_birth');
             $table->string('address');
-            $table->string('numb_phone');
+            $table->string('phone');
+            $table->string('email');
             $table->timestamps();
         });
     }

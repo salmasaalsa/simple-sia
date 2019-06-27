@@ -12,9 +12,16 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $teacher = \App\Teacher::paginate(5);
+        $filterKeyword = $request->get('keyword');
+
+        if($filterKeyword){
+            $teacher = \App\Teacher::where('email', 'LIKE', "%$filterKeyword%")->paginate(5);
+        }
+
+        return view('admin.teacher.index', ['teacher' => $teacher]);
     }
 
     /**
@@ -35,7 +42,18 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $teacher = new \App\Teacher;
+
+        $teacher->full_name = $request->get('full_name');
+        $teacher->date_of_birth = $request->get('date_of_birth');
+        $teacher->place_of_birth = $request->get('place_of_birth');
+        $teacher->address = $request->get('address');
+        $teacher->phone = $request->get('phone');
+        $teacher->email = $request->get('email');
+        $teacher->save();
+
+
+        return redirect()->route('teacher.index')->with('status', 'Student successfully created.');
     }
 
     /**
@@ -44,9 +62,11 @@ class TeacherController extends Controller
      * @param  \App\Teacher  $Teacher
      * @return \Illuminate\Http\Response
      */
-    public function show(Teacher $Teacher)
+    public function show($id)
     {
-        //
+        $teacher = \App\Teacher::findOrFail($id);
+
+        return view('admin.teacher.show', ['teacher' => $teacher]);
     }
 
     /**
@@ -55,9 +75,11 @@ class TeacherController extends Controller
      * @param  \App\Teacher  $Teacher
      * @return \Illuminate\Http\Response
      */
-    public function edit(Teacher $Teacher)
+    public function edit($id)
     {
-        //
+        $teacher = \App\Teacher::findOrFail($id);
+
+        return view('admin.teacher.edit', ['teacher' => $teacher]);
     }
 
     /**
@@ -67,9 +89,19 @@ class TeacherController extends Controller
      * @param  \App\Teacher  $Teacher
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Teacher $Teacher)
+    public function update(Request $request,$id)
     {
-        //
+        $teacher = \App\Teacher::findOrFail($id);
+
+        $teacher->full_name = $request->get('full_name');
+        $teacher->date_of_birth = $request->get('date_of_birth');
+        $teacher->place_of_birth = $request->get('place_of_birth');
+        $teacher->address = $request->get('address');
+        $teacher->phone = $request->get('phone');
+        $teacher->email = $request->get('email');
+        $teacher->save();
+
+        return redirect()->route('teacher.index')->with('status', 'User teacher succesfully updated');
     }
 
     /**
@@ -78,8 +110,10 @@ class TeacherController extends Controller
      * @param  \App\Teacher  $Teacher
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Teacher $Teacher)
+    public function destroy($id)
     {
-        //
+        $teacher = \App\Teacher::findOrFail($id);
+        $teacher->delete();
+        return redirect()->route('teacher.index')->with('status', 'User student successfully delete');
     }
 }

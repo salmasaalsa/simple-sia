@@ -21,10 +21,13 @@ Route::match(["GET", "POST"], "/register", function(){
 })->name("register");
 
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::resource('student', 'StudentController');
 
 Route::resource('teacher', 'TeacherCobtroller');
 Route::resource('news', 'NewsController');
 
 Route::resource('presences', 'PresenceController');
+
+Route::resource('subject', 'SubjectController');
 

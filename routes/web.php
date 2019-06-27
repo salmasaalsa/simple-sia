@@ -22,4 +22,9 @@ Route::match(["GET", "POST"], "/register", function(){
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('student', 'StudentController');
-Route::post('student/create', 'StudentController@store'); 
+
+Route::resource('teacher', 'TeacherCobtroller');
+Route::resource('news', 'NewsController');
+
+Route::resource('presences', 'PresenceController');
+
